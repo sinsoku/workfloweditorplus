@@ -1,0 +1,44 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude"
+  xmlns:py="http://genshi.edgewall.org/" lang="ja" xml:lang="ja">
+<xi:include href="admin.html" />
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <title>チケットワークフロー管理</title>
+</head>
+
+<body>
+
+<h2>チケットワークフロー管理</h2>
+
+<form id="mod" class="mod" method="post">
+  <fieldset>
+    <legend>ワークフロー設定</legend>
+    <div class="field">
+      <textarea name="workflow_config" rows="25" cols="100" wrap="off">${template.workflow_config}</textarea>
+      <br />
+      <br />
+      <div>ワークフローの設定方法については、<a href="${href.wiki('TracWorkflow')}">TracWorkflow</a>を参照してください。</div>
+    </div>
+  </fieldset>
+  <div class="buttons">
+    <input type="submit" value="変更を適用" />
+  </div>
+</form>
+
+<br />
+
+<form id="init" class="add" method="post">
+  <input type="hidden" name="workflow_config" value="${template.workflow_default_config}" />
+  <div>ワークフローを初期設定に戻すには、以下のボタンを押下してください。</div>
+  <div class="buttons">
+    <input type="submit" value="初期設定に戻す" />
+  </div>
+</form>
+
+</body>
+
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude"
+  xmlns:py="http://genshi.edgewall.org/" lang="en" xml:lang="en">
+<xi:include href="admin.html" />
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <title>Manage Ticket Workflow</title>
+</head>
+
+<body>
+
+<h2>Manage Ticket Workflow</h2>
+
+<form id="mod" class="mod" method="post">
+  <fieldset>
+    <legend>Workflow Configuration</legend>
+    <div class="field">
+      <textarea name="workflow_config" rows="25" cols="100" wrap="off">${template.workflow_config}</textarea>
+      <br />
+      <br />
+      <div>How to set the workflow: <a href="${href.wiki('TracWorkflow')}">TracWorkflow</a></div>
+    </div>
+  </fieldset>
+  <div class="buttons">
+    <input type="submit" value="Apply changes" />
+  </div>
+</form>
+
+<br />
+
+<form id="init" class="add" method="post">
+  <input type="hidden" name="workflow_config" value="${template.workflow_default_config}" />
+  <div>If you revert to the default workflow, please click the following button.</div>
+  <div class="buttons">
+    <input type="submit" value="Revert to the default" />
+  </div>
+</form>
+
+</body>
+
+</html>
