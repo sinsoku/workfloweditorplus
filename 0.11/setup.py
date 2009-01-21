@@ -6,6 +6,10 @@ from setuptools import find_packages, setup
 setup(
     name = 'WorkflowEditorPlugin',
     version = '0.1',
+    description = "Edit Ticket Workflow",
+    url = "http://trac-hacks.org/wiki/WorkflowEditorPlugin",
+    author = "Takanori Suzuki",
+    author_email = "takanorig@gmail.com",
     license = "New BSD",
     zip_safe=True,
     packages=find_packages(exclude=['*.tests*']),
