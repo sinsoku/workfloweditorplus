@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
-import json
 from os import environ
-from trac.core import Component, implements
+from trac.core import Component
 
 class LocaleUtil(Component):
     

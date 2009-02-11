@@ -1,15 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from trac import ticket
 from trac.core import *
 from trac.web.chrome import ITemplateProvider, add_stylesheet, add_script
 from trac.admin import IAdminPanelProvider
 from trac.web.api import ITemplateStreamFilter, IRequestHandler
 from trac.web.chrome import Chrome
-from genshi.filters.transform import Transformer
-from genshi.template import MarkupTemplate
 from api import LocaleUtil
-import os
 
 class WorkflowEditorAdmin(Component):
     implements(ITemplateProvider, ITemplateStreamFilter, IAdminPanelProvider)

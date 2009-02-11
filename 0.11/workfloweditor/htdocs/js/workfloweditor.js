@@ -33,9 +33,9 @@ jQuery(document).ready(function(){
     // Save button action
     // The workflow is updated before saving.
     jQuery("#doChanges").click( function() {
-        if (currentTab = "textTab") {
-            context.updateModelByText("#workflowText");
-            context.refreshGrid();
+        if (currentTab = "gridTab") {
+            context.updateModelByGrid("#workflowGrid");
+            context.refreshText();
         }
     });
     
