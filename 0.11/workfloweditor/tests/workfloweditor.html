@@ -1,0 +1,90 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude"
+  xmlns:py="http://genshi.edgewall.org/" lang="jp" xml:lang="jp">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <title>Manage Ticket Workflow</title>
+  <link rel="stylesheet" type="text/css" media="screen" href="../htdocs/css/grid.css" />
+  <link rel="stylesheet" type="text/css" media="screen" href="../htdocs/css/jqModal.css" />
+  <link rel="stylesheet" type="text/css" media="screen" href="../htdocs/css/ui.tabs.css" />
+  <link rel="stylesheet" type="text/css" media="screen" href="../htdocs/css/workfloweditor.css" />
+  <script src="../htdocs/js/jquery.js" type="text/javascript"></script>
+  <script src="../htdocs/js/jquery.jqGrid.js" type="text/javascript"></script>
+  <script src="../htdocs/js/grid/jqModal.js" type="text/javascript"></script>
+  <script src="../htdocs/js/grid/jqDnR.js" type="text/javascript"></script>
+  <script src="../htdocs/js/grid/jquery.tablednd.js" type="text/javascript"></script>
+  <script src="../htdocs/js/ui/ui.core.js" type="text/javascript"></script>
+  <script src="../htdocs/js/ui/ui.tabs.pack.js" type="text/javascript"></script>
+  <script src="../htdocs/js/workfloweditor.js" type="text/javascript"></script>
+</head>
+
+<body>
+
+以下の点を確認してください。
+<ul>
+  <li>jquery.jqGrid.js の pathtojsfiles で、JavaScriptのパスが適切に設定されていること。</li>
+  <li>workfloweditor.js のグリッド表示設定で、imgpath が適切に設定されていること。</li>
+</ul>
+
+<br />
+
+<div id="workflowTabs" style="display:none;">
+
+  <ul>
+    <li><a href="#gridTab"><span>Grid</span></a></li>
+    <li><a href="#textTab"><span>Text</span></a></li>
+  </ul>
+
+  <div id="gridTab">
+    <table id="workflowStatusGrid" class="scroll" cellpadding="0" cellspacing="0"></table>
+    <table id="workflowGrid" class="scroll" cellpadding="0" cellspacing="0"></table>
+    <br />
+    <input type="button" id="workflowGridItemAdd" value="追加" />
+    <input type="button" id="workflowGridItemMod" value="変更" />
+    <input type="button" id="workflowGridItemDel" value="削除" />
+    &nbsp;&nbsp;
+    <input type="button" id="workflowStatusGridItemMod" value="ステータスの編集" />
+  </div>
+
+  <div id="textTab">
+    <textarea id="workflowText" cols="80" rows="20">
+accept = new,assigned,accepted,reopened -> accepted
+accept.default = 4
+accept.name = 着手する
+accept.operations = set_owner_to_self
+accept.permissions = TICKET_MODIFY
+leave = * -> *
+leave.default = 5
+leave.name = 変更しない
+leave.operations = leave_status
+reassign = new,assigned,accepted,reopened -> assigned
+reassign.default = 3
+reassign.name = 担当者変更
+reassign.operations = set_owner
+reassign.permissions = TICKET_MODIFY
+reopen = closed -> reopened
+reopen.default = 2
+reopen.name = 差し戻し
+reopen.operations = del_resolution
+reopen.permissions = TICKET_CREATE
+resolve = new,assigned,accepted,reopened -> closed
+resolve.default = 1
+resolve.name = 解決する
+resolve.operations = set_resolution
+resolve.permissions = TICKET_MODIFY
+    </textarea>
+  </div>
+
+</div>
+
+<br />
+<br />
+<input type="button" id="showData" value="データを表示" />
+
+
+</body>
+
+</html>

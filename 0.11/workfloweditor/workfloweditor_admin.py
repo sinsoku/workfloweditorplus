@@ -4,7 +4,7 @@ from trac import ticket
 from trac.core import *
 from trac.web.chrome import ITemplateProvider, add_stylesheet, add_script
 from trac.admin import IAdminPanelProvider
-from trac.web.api import ITemplateStreamFilter
+from trac.web.api import ITemplateStreamFilter, IRequestHandler
 from trac.web.chrome import Chrome
 from genshi.filters.transform import Transformer
 from genshi.template import MarkupTemplate
@@ -42,7 +42,17 @@ class WorkflowEditorAdmin(Component):
     # IAdminPanelProvider method
     def render_admin_panel(self, req, cat, page, path_info):
         req.perm.assert_permission('TRAC_ADMIN')
-        add_stylesheet(req, 'workfloweditor/workfloweditor.css')
+        add_script(req, 'workfloweditor/js/jquery.jqGrid.js')
+        add_script(req, 'workfloweditor/js/grid/jqModal.js')
+        add_script(req, 'workfloweditor/js/grid/jqDnR.js')
+        add_script(req, 'workfloweditor/js/grid/jquery.tablednd.js')
+        add_script(req, 'workfloweditor/js/ui/ui.core.js')
+        add_script(req, 'workfloweditor/js/ui/ui.tabs.pack.js')
+        add_script(req, 'workfloweditor/js/workfloweditor.js')
+        add_stylesheet(req, 'workfloweditor/css/grid.css')
+        add_stylesheet(req, 'workfloweditor/css/jqModal.css')
+        add_stylesheet(req, 'workfloweditor/css/ui.tabs.css')
+        add_stylesheet(req, 'workfloweditor/css/workfloweditor.css')
         
         if req.method == 'POST':
             self._update_config(req)
@@ -112,3 +122,22 @@ class WorkflowEditorAdmin(Component):
         default_config = stream.render('text')
         
         page_param['workflow_default_config'] = default_config
+
+
+class WorkflowChangeHandler(Component):
+    implements(IRequestHandler)
+
+    # IRequestHandler method
+    def match_request(self, req):
+        match = False
+        if req.path_info == '/admin/ticket/workfloweditor/edit':
+            match = True
+        
+        return match
+    
+    # IRequestHandler method
+    def process_request(self, req):
+        req.send_response(200)
+        req.send_header('Content-Type', 'content=text/html; charset=UTF-8')
+        req.end_headers()
+        req.write("OK")
