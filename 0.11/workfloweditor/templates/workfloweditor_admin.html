@@ -17,15 +17,36 @@
 <form id="mod" class="mod" method="post">
   <fieldset>
     <legend>Workflow Configuration</legend>
-    <div class="field">
-      <textarea name="workflow_config" rows="25" cols="100" wrap="off">${template.workflow_config}</textarea>
-      <br />
-      <br />
-      <div>How to set the workflow: <a href="${href.wiki('TracWorkflow')}">TracWorkflow</a></div>
+    <br />
+    <div id="workflowTabs" style="display:none;">
+      <ul>
+        <li><a href="#gridTab"><span>Grid</span></a></li>
+        <li><a href="#textTab"><span>Text</span></a></li>
+      </ul>
+      <div id="gridTab">
+        <table id="workflowStatusGrid" class="scroll" cellpadding="0" cellspacing="0"></table>
+        <table id="workflowGrid" class="scroll" cellpadding="0" cellspacing="0"></table>
+        <br />
+        <ul>
+          <li>If you edit the action, please click 'Add', 'Change' or 'Delete' button.</li>
+          <li>If you edit the status, please click 'Edit status' button.</li>
+        </ul>
+        <input type="button" id="workflowGridItemAdd" value="Add" />
+        <input type="button" id="workflowGridItemMod" value="Change" />
+        <input type="button" id="workflowGridItemDel" value="Delete" />
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="button" id="workflowStatusGridItemMod" value="Edit status" />
+      </div>
+      <div id="textTab">
+        <textarea id="workflowText" name="workflow_config" rows="20" cols="100" wrap="off">${template.workflow_config}</textarea>
+      </div>
     </div>
+    <br />
+    <div>How to set the workflow: <a href="${href.wiki('TracWorkflow')}">TracWorkflow</a></div>
   </fieldset>
+
   <div class="buttons">
-    <input type="submit" value="Apply changes" />
+    <input id="doChanges" type="submit" value="Apply changes" />
   </div>
 </form>
 

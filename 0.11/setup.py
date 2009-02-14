@@ -5,7 +5,7 @@ from setuptools import find_packages, setup
 #ticket-workflow
 setup(
     name = 'WorkflowEditorPlugin',
-    version = '1.0beta',
+    version = '1.0',
     description = "Edit Ticket Workflow",
     url = "http://trac-hacks.org/wiki/WorkflowEditorPlugin",
     author = "Takanori Suzuki",

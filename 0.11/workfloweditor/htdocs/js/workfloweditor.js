@@ -1,6 +1,55 @@
 var workfloweditor;
 if (!workfloweditor) workfloweditor = {};
 
+/**
+ * i18n
+ */
+workfloweditor.Localizer = function() {
+    this.strings = {};
+    this.lang = "";
+    
+    var htmlTag = document.getElementsByTagName("html")[0];
+    this.lang = htmlTag.getAttribute("xml:lang") || htmlTag.getAttribute("lang");
+    
+    // If there isn't the lang attribute, use browser language.
+    if (this.lang == null || this.lang == "") {
+        var currentLanguage;
+        if (navigator.browserLanguage) {
+            currentLanguage = navigator.browserLanguage; 
+        } else if (navigator.language) { 
+            currentLanguage = navigator.language; 
+        } else if (navigator.userLanguage) { 
+            currentLanguage = navigator.userLanguage; 
+        }
+        
+        if (currentLanguage && currentLanguage.length >= 2) {
+            this.lang = currentLanguage.substr(0,2);
+        }
+    }
+    
+    var self = this;
+    this.getLocalizedString = function(str) {
+        if (!workfloweditor.Localizer.strings)
+        {
+            return str;
+        }
+        
+        var message = workfloweditor.Localizer.strings[str];
+        if (!message || message == "") {
+            message = str;
+        }
+        return message;
+    };
+    
+    return this;
+}
+
+workfloweditor.Localizer = new workfloweditor.Localizer();
+_ = workfloweditor.Localizer.getLocalizedString;
+
+/**
+ * Workflow Editor onload action.
+ */
 jQuery(document).ready(function(){
     var context = new workfloweditor.WorkflowContext();
     
@@ -33,9 +82,21 @@ jQuery(document).ready(function(){
     // Save button action
     // The workflow is updated before saving.
     jQuery("#doChanges").click( function() {
-        if (currentTab = "gridTab") {
+        try
+        {
+            if (currentTab == "textTab") {
+                context.updateModelByText("#workflowText");
+                context.refreshGrid();            
+            }
+            
             context.updateModelByGrid("#workflowGrid");
             context.refreshText();
+        }
+        catch(ex)
+        {
+            alert(_("Error: Please fix the workflow text.")
+                  + "\n(error code = " + ex.number + ")");
+            return false;
         }
     });
     
@@ -49,12 +110,12 @@ jQuery(document).ready(function(){
 workfloweditor.WorkflowContext = function() {
     this.DEFAULT_OPERATIONS = {
                                ""                  : "",
-                               "set_owner"         : "担当者を設定",
-                               "del_owner"         : "担当者を削除",
-                               "set_owner_to_self" : "自分を担当者に設定",
-                               "set_resolution"    : "解決方法を設定",
-                               "del_resolution"    : "解決方法を削除",
-                               "leave_status"      : "ステータス表示のみ"
+                               "set_owner"         : _("set owner"),
+                               "del_owner"         : _("del owner"),
+                               "set_owner_to_self" : _("set owner to self"),
+                               "set_resolution"    : _("set resolution"),
+                               "del_resolution"    : _("del resolution"),
+                               "leave_status"      : _("leave status")
                               };
     this.DEFAULT_PERMISSIONS = {
                                 ""              : "",
@@ -361,7 +422,7 @@ workfloweditor.WorkflowContext.prototype.initGrid = function(gridId) {
                     }
                 );
             } else {
-                alert("行を選択してください");
+                alert(_("Please select row."));
             }
         });
         
@@ -380,7 +441,7 @@ workfloweditor.WorkflowContext.prototype.initGrid = function(gridId) {
                     }
                 );
             } else {
-                alert("行を選択してください");
+                alert(_("Please select row."));
             }
         });
         
@@ -393,7 +454,7 @@ workfloweditor.WorkflowContext.prototype.initGrid = function(gridId) {
  * @param colNames  the array of the grid column name
  */
 workfloweditor.WorkflowContext.prototype.createGridColNames = function() {
-    var colNames = ['操作', '表示名', '処理', '権限', '順序', '次のステータス', ''];
+    var colNames = [_('action'), _('name'), _('operation'), _('permission'), _('order'), _('next status'), ''];
     colNames = colNames.concat(this.status);
     
     return colNames;
@@ -530,7 +591,7 @@ workfloweditor.WorkflowContext.prototype.initStatusGrid = function(statusGridId)
         datatype    : "local",
         height      : 0,
         width       : 0,
-        colNames    : ["ステータス"],
+        colNames    : [_("status")],
         colModel    : [{
                         name:'editableStatus', index:'status', width:100, editable:true,
                         edittype:"textarea", editrules:{required:true}, editoptions: {rows:"10",cols:"15"},

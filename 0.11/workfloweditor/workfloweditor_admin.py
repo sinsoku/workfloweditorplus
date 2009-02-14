@@ -29,8 +29,8 @@ class WorkflowEditorAdmin(Component):
     def get_admin_panels(self, req):
         if req.perm.has_permission('TRAC_ADMIN'):
             # localization
-            locale = LocaleUtil(self.env).get_locale(req)
-            if locale in ['ja', 'ja-JP']:
+            locale = LocaleUtil().get_locale(req)
+            if (locale == 'ja'):
                 yield ('ticket', u'チケットシステム', 'workfloweditor', u'ワークフロー')
             else:
                 yield ('ticket', 'Ticket System', 'workfloweditor', 'Workflow')
@@ -57,8 +57,9 @@ class WorkflowEditorAdmin(Component):
         self._create_page_param(req, page_param)
         
         # localization
-        locale = LocaleUtil(self.env).get_locale(req)
-        if locale in ['ja', 'ja-JP']:
+        locale = LocaleUtil().get_locale(req)
+        if (locale == 'ja'):
+            add_script(req, 'workfloweditor/js/workfloweditor-locale-ja.js')
             page_template = 'workfloweditor_admin_ja.html'
         else:
             page_template = 'workfloweditor_admin.html'
@@ -106,8 +107,8 @@ class WorkflowEditorAdmin(Component):
         # page_param['workflow_default_config']
         
         # localization
-        locale = LocaleUtil(self.env).get_locale(req)
-        if locale in ['ja', 'ja-JP']:
+        locale = LocaleUtil().get_locale(req)
+        if (locale == 'ja'):
             init_file = 'trac_jp.ini'
         else:
             init_file = 'trac.ini'

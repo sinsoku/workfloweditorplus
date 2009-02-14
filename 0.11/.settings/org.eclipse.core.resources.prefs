@@ -1,7 +1,8 @@
-#Mon Feb 09 00:04:30 JST 2009
+#Sat Feb 14 23:25:00 JST 2009
 eclipse.preferences.version=1
 encoding//customworkflow/templates/customworkflow_admin.html=UTF-8
 encoding//customworkflow/templates/customworkflow_admin_ja.html=UTF-8
+encoding//workfloweditor/htdocs/js/workfloweditor-locale-ja.js=UTF-8
 encoding//workfloweditor/htdocs/js/workfloweditor.js=UTF-8
 encoding/<project>=UTF-8
 encoding/setup.py=UTF-8
