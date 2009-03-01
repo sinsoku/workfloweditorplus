@@ -364,7 +364,7 @@ workfloweditor.WorkflowContext.prototype.initGrid = function(gridId) {
         colModel    : colModel,
         shrinkToFit : false,
         imgpath     : this.IMAGE_PATH,
-        editurl     : this.EDIT_URL,
+        editurl     : this.EDIT_URL
     });
     
     var gridData = this.createGridData();
@@ -599,7 +599,7 @@ workfloweditor.WorkflowContext.prototype.initStatusGrid = function(statusGridId)
                       }],
         imgpath     : this.IMAGE_PATH,
         editurl     : this.EDIT_URL,
-        loadui      : "disable",
+        loadui      : "disable"
     });
     
     jQuery(statusGridId).addRowData(1, {editableStatus : this.status.join(" ")});

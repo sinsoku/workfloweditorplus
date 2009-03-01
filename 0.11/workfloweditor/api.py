@@ -8,7 +8,11 @@ class LocaleUtil:
         """Get client locale from the http request."""
         
         locale = None
-        locale_array = req.environ['HTTP_ACCEPT_LANGUAGE'].split(",")
+        locale_array = None
+        
+        if req.environ.has_key('HTTP_ACCEPT_LANGUAGE'):
+            locale_array = req.environ['HTTP_ACCEPT_LANGUAGE'].split(",")
+        
         if (len(locale_array) > 0):
             locale = locale_array[0].strip()
         

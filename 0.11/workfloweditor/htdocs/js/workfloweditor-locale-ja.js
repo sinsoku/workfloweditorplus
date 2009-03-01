@@ -16,4 +16,5 @@ workfloweditor.Localizer.strings = {
 'status' : 'ステータス',
 'Error: Please fix the workflow text.' : 'Error: ワークフロー設定を見直してください。',
 
+'' : ''
 };
