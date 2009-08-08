@@ -454,6 +454,12 @@ workfloweditor.WorkflowContext.prototype.initGrid = function(gridId) {
  * @param colNames  the array of the grid column name
  */
 workfloweditor.WorkflowContext.prototype.createGridColNames = function() {
+    // for IE6
+    // Localization function isn't initialized in the local function.
+    if (!_) {
+        _ = workfloweditor.Localizer.getLocalizedString;
+    }
+    
     var colNames = [_('action'), _('name'), _('operation'), _('permission'), _('order'), _('next status'), ''];
     colNames = colNames.concat(this.status);
     
