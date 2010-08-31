@@ -22,6 +22,7 @@
       <ul>
         <li><a href="#gridTab"><span>Grid</span></a></li>
         <li><a href="#textTab"><span>Text</span></a></li>
+        <li><a href="#textTab"><span>Advance</span></a></li>
       </ul>
       <div id="gridTab">
         <table id="workflowStatusGrid" class="scroll" cellpadding="0" cellspacing="0"></table>
@@ -39,6 +40,17 @@
       </div>
       <div id="textTab">
         <textarea id="workflowText" name="workflow_config" rows="20" cols="100" wrap="off">${template.workflow_config}</textarea>
+      </div>
+      <div id="advanceTab">
+        <table id="workflowStatusAdvance" class="scroll" cellpadding="0" cellspacing="0"></table>
+        <table id="workflowAdvance" class="scroll" cellpadding="0" cellspacing="0"></table>
+        <br />
+        <ul>
+          <li>If you edit the action, please click 'Add', 'Change' button.</li>
+        </ul>
+        <input type="button" id="workflowAdvanceItemAdd" value="Add" />
+        <input type="button" id="workflowAdvanceItemMod" value="Change" />
+        &nbsp;&nbsp;&nbsp;&nbsp;
       </div>
     </div>
     <br />
