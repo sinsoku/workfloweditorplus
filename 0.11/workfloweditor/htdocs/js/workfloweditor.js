@@ -135,6 +135,30 @@ workfloweditor.WorkflowContext = function() {
                                 "TICKET_MODIFY" : "TICKET_MODIFY",
                                 "TICKET_ADMIN"  : "TICKET_ADMIN"
                                };
+    this.DEFAULT_OPTIONS     = {
+                               ""               : "",
+                               "set_owner"      : _("set owner value"),
+                               "set_resolution" : _("set resolution value")
+                              };
+    this.ADVANCED_OPERATIONS = {
+                               "set_owner_to_reporter"        : _("set owner to reporter"),
+                               "set_owner_to_component_owner" : _("set owner to component owner"),
+                               "set_owner_to_field"           : _("set owner to field"),
+                               "set_owner_to_previous"        : _("set owner to previous"),
+                               "set_status_to_previous"       : _("set status to previous"),
+                               "reset_milestone"              : _("reset milestone"),
+                               "run_external"                 : _("run external"),
+                               "triage"                       : _("triage"),
+                               "xref"                         : _("xref")
+                              };
+    this.ADVANCED_OPTIONS    = {
+                               "set_owner_to_field" : _("set owner to field value"),
+                               "run_external"       : _("run external value"),
+                               "triage_field"       : _("triage field"),
+                               "triage_split"       : _("triage split"),
+                               "xref"               : _("xref value"),
+                               "xref_local"         : _("xref local")
+                              };
     this.DEFAULT_STATUS = ["new", "assigned", "accepted", "reopened", "closed"];
     this.HIDDEN_COL     = ["operations", "permissions"];
     this.STATUS_PREFIX  = "status_";
@@ -327,56 +351,40 @@ workfloweditor.WorkflowContext.prototype.updateModelByAdvance = function(advance
             continue;
         }
         
-        var oldStatus = [];
+        var operations = this.model[action]["operations"].split(",");
+        for (adope in this.ADVANCED_OPERATIONS) {
+            for ( var i = 0; i < operations.lengh; i++ ) {
+                if ( operations[i] == adope ) {
+                    operations.splice(i, 1);
+                }
+            }
+        }
+        
         for (col in rowData) {
-            var pos = col.indexOf(this.STATUS_PREFIX);
-            if ((pos == 0) && (rowData[col] == "Yes")) {
-                var tempStatus = col.substring(this.STATUS_PREFIX.length, col.length);
-                oldStatus.push(tempStatus);
-            }
-        }
-        
-        var defaultVal = rowNum - rowData["order"] + 1;
-        if (defaultVal < 0) {
-            defaultVal = 0;
-        }
-        
-        var operations;
-        for (ope in this.DEFAULT_OPERATIONS) {
-            if (rowData["operations"] == this.DEFAULT_OPERATIONS[ope]) {
-                operations = ope;
-                break;
-            }
-        }
-        
-        var permissions;
-        for (perm in this.DEFAULT_PERMISSIONS) {
-            if (rowData["permissions"] == this.DEFAULT_PERMISSIONS[perm]) {
-                permissions = perm;
-                break;
+            for ( adope in this.ADVANCED_OPERATIONS ) {
+                if ( col == adope && rowData[col] == "Yes") {
+                    operations.push(col);
+                }
             }
         }
         
         workflow = {};
         workflow["action"]      = action;
-        workflow["oldStatus"]   = oldStatus.join(",");
-        workflow["newStatus"]   = rowData["status"];
         workflow["name"]        = rowData["name"];
-        workflow["default"]     = defaultVal;
-        workflow["operations"]  = operations;
-        workflow["permissions"] = permissions;
+        workflow["operations"]  = operations.join();
         
         model[action] = workflow;
         
-        var newStatus = workflow["newStatus"];
-        if ((newStatus != "*") && ($.inArray(newStatus, status) < 0)) {
-            status.push(newStatus);
-        }
     }
     
-    workfloweditor.WorkflowContext.normalizeModel(model);
-    
-    this.model  = model;
+    // update model by advance has data
+    for ( action in this.model ) {
+        for ( key in this.model[action] ) {
+            if ( model[action][key] ) {
+                this.model[action][key] = model[action][key];
+            }
+        }
+    }
     this.status = status;
 }
 
@@ -815,7 +823,6 @@ workfloweditor.WorkflowContext.prototype.initAdvance = function(advanceId) {
     
     var colNames   = this.createAdvanceColNames();
     var colModel   = this.createAdvanceColModel();
-    
     jQuery(advanceId).jqGrid({
         datatype    : "local",
         height      : 200,
@@ -847,7 +854,7 @@ workfloweditor.WorkflowContext.prototype.initAdvance = function(advanceId) {
         
         // add action setting
         $(advanceId + "ItemAdd").click(function(){
-            jQuery(advanceId).editAdvanceRow(
+            jQuery(advanceId).editGridRow(
                 "new",
                 {
                  top               : 50,
@@ -865,9 +872,9 @@ workfloweditor.WorkflowContext.prototype.initAdvance = function(advanceId) {
         
         // modify action setting
         $(advanceId + "ItemMod").click(function(){
-            var gr = jQuery(advanceId).getAdvanceParam("selrow");
+            var gr = jQuery(advanceId).getGridParam("selrow");
             if( gr != null ) {
-                jQuery(advanceId).editAdvanceRow(
+                jQuery(advanceId).editGridRow(
                     gr,
                     {
                      top               : 50,
@@ -888,7 +895,7 @@ workfloweditor.WorkflowContext.prototype.initAdvance = function(advanceId) {
         
         // delete action setting
         $(advanceId + "ItemDel").click(function(){
-            var gr = jQuery(advanceId).getAdvanceParam("selrow");
+            var gr = jQuery(advanceId).getGridParam("selrow");
             if( gr != null ) {
                 jQuery(advanceId).delAdvanceRow(
                     gr,
@@ -920,8 +927,11 @@ workfloweditor.WorkflowContext.prototype.createAdvanceColNames = function() {
         _ = workfloweditor.Localizer.getLocalizedString;
     }
     
-    var colNames = [_('action'), _('name'), _('operation'), _('permission'), _('order'), _('next status'), ''];
-    colNames = colNames.concat(this.status);
+    var colNames = [_('action'), _('name')];
+    var operations;
+    for (ope in this.ADVANCED_OPERATIONS) {
+        colNames.push(this.ADVANCED_OPERATIONS[ope]);
+    }
     
     return colNames;
 }
@@ -932,38 +942,20 @@ workfloweditor.WorkflowContext.prototype.createAdvanceColNames = function() {
  * @param colModel  the array of the advance column model
  */
 workfloweditor.WorkflowContext.prototype.createAdvanceColModel = function() {
-    var statusValue = "*:*;";
-    for (var index = 0; index < this.status.length; index++) {
-        statusValue += this.status[index] + ":" + this.status[index] + ";";
+    var opeValue = [];
+    for (ope in this.ADVANCED_OPERATIONS) {
+        opeValue.push(ope);
     }
-    statusValue = statusValue.substring(0, statusValue.length - 1);
-    
-    var opeValue = "";
-    for (ope in this.DEFAULT_OPERATIONS) {
-        opeValue += ope + ":" + this.DEFAULT_OPERATIONS[ope] + ";";
-    }
-    opeValue = opeValue.substring(0, opeValue.length - 1);
-    
-    var permValue = "";
-    for (perm in this.DEFAULT_PERMISSIONS) {
-        permValue += perm + ":" + this.DEFAULT_PERMISSIONS[perm] + ";";
-    }
-    permValue = permValue.substring(0, permValue.length - 1);
     
     var colModel = [
         {name:'action',      index:'action',      width:75,  editable:true,  editrules:{required:true, edithidden:false}},
         {name:'name',        index:'name',        width:100, editable:true,  editrules:{required:true}},
-        {name:'operations',  index:'operations',  width:100, editable:true,  edittype:"select", editoptions:{value:opeValue},  hidden:true},
-        {name:'permissions', index:'permissions', width:100, editable:true,  edittype:"select", editoptions:{value:permValue}, hidden:true},
-        {name:'order',       index:'order',       width:45,  editable:true,  align:"right", sorttype:"int", editrules:{integer:true}},
-        {name:'status',      index:'status',      width:100, editable:true,  edittype:"select", editoptions:{value:statusValue}},
-        {name:'blank',       index:'blank',       width:22,  editable:false, align:"center"}
     ];
     
-    for (var index = 0; index < this.status.length; index++) {
-        var statusColModel = {
-            name        : this.STATUS_PREFIX + this.status[index],
-            index       : this.STATUS_PREFIX + this.status[index],
+    for (var index = 0; index < opeValue.length; index++) {
+        var operationsColModel = {
+            name        : opeValue[index],
+            index       : opeValue[index],
             width       : 75,
             editable    : true,
             align       : "center",
@@ -971,7 +963,7 @@ workfloweditor.WorkflowContext.prototype.createAdvanceColModel = function() {
             editoptions : {value:"Yes:No"}
         };
         
-        colModel.push(statusColModel);
+        colModel.push(operationsColModel);
     }
     
     return colModel;
@@ -996,38 +988,19 @@ workfloweditor.WorkflowContext.prototype.createAdvanceData = function() {
         var workflow = model[action];
         var rowData = {};
         
-        var operations;
-        if (this.DEFAULT_OPERATIONS[workflow["operations"]]) {
-            operations = this.DEFAULT_OPERATIONS[workflow["operations"]];
-        } else {
-            operations = "";
-        }
-        
-        var permissions;
-        if (this.DEFAULT_PERMISSIONS[workflow["permissions"]]) {
-            permissions = this.DEFAULT_PERMISSIONS[workflow["permissions"]];
-        } else {
-            permissions = "";
-        }
-        
         rowData["action"]      = workflow["action"];
         rowData["name"]        = workflow["name"];
-        rowData["status"]      = workflow["newStatus"];
-        rowData["operations"]  = operations;
-        rowData["permissions"] = permissions;
-        rowData["order"]       = modelSize - workflow["default"] + 1;
-        rowData["blank"]       = "<--";
+        for ( var ope in this.ADVANCED_OPERATIONS ) {
+            rowData[ope] = "No";
+        }
         
-        var oldStatus = workflow["oldStatus"] + ",";
-        for (var index = 0; index < status.length; index++) {
-            var tempStatus = status[index];
-            var match;
-            if ((oldStatus == "*,") || (oldStatus.indexOf(tempStatus + ",") >= 0)) {
-                match = "Yes";
-            } else {
-                match = "No";
+        tempOperations = workflow["operations"].split(",");
+        for (var index = 0; index < tempOperations.length; index++) {
+            for ( var ope in this.ADVANCED_OPERATIONS ) {
+                if ( tempOperations[index] == ope ) {
+                    rowData[ope] = "Yes";
+                }
             }
-            rowData[this.STATUS_PREFIX + tempStatus] = match;
         }
         
         advanceData.push(rowData);
