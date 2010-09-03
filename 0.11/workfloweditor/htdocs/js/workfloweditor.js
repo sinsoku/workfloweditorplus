@@ -292,7 +292,14 @@ workfloweditor.WorkflowContext.prototype.updateModelByGrid = function(gridId) {
     
     workfloweditor.WorkflowContext.normalizeModel(model);
     
-    this.model  = model;
+    // update model by grid has data
+    for ( action in this.model ) {
+        for ( key in this.model[action] ) {
+            if ( model[action][key] ) {
+                this.model[action][key] = model[action][key];
+            }
+        }
+    }
     this.status = status;
 }
 
@@ -777,18 +784,13 @@ workfloweditor.WorkflowContext.prototype.createWorkflowText = function() {
             continue;
         }
         
-        var operations = workflow["operations"];
-        var permissions = workflow["permissions"];
-        
         // create each workflow define.
         textArray.push(action + " = " + workflow["oldStatus"] + " -> " + workflow["newStatus"]);
-        textArray.push(action + ".name = " + workflow["name"]);
-        textArray.push(action + ".default = " + workflow["default"]);
-        if (operations && operations.length > 0) {
-            textArray.push(action + ".operations = " + operations);
-        }
-        if (permissions && permissions.length > 0) {
-            textArray.push(action + ".permissions = " + permissions);
+        for ( key in workflow ) {
+            if ( key == "oldStatus" || key == "newStatus" ) {
+                continue;
+            }
+            textArray.push(action + "." + key + " = " + workflow[key]);
         }
     }
     
