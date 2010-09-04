@@ -351,27 +351,38 @@ workfloweditor.WorkflowContext.prototype.updateModelByAdvance = function(advance
             continue;
         }
         
-        var operations = this.model[action]["operations"].split(",");
-        for (adope in this.ADVANCED_OPERATIONS) {
-            for ( var i = 0; i < operations.lengh; i++ ) {
-                if ( operations[i] == adope ) {
-                    operations.splice(i, 1);
+        var operations;
+        if (this.model[action]["operations"].indexOf(",") != -1) {
+            // operations has advance operations
+            var tmpOperations = this.model[action]["operations"].split(",");
+            for ( var i = 0; i < tmpOperations.length; i++ ) {
+                for (var ope in this.DEFAULT_OPERATIONS) {
+                    if ( ope == "") continue;
+                    if ( tmpOperations[i] == ope) {
+                        operations = tmpOperations[i];
+                        break;
+                    }
+                }
+                if( operations != "") {
+                    break;
                 }
             }
+        } else {
+            // operations has only default operations
+            operations = this.model[action]["operations"];
         }
-        
-        for (col in rowData) {
-            for ( adope in this.ADVANCED_OPERATIONS ) {
-                if ( col == adope && rowData[col] == "Yes") {
-                    operations.push(col);
-                }
+
+        // update by advance has data
+        for ( adope in this.ADVANCED_OPERATIONS ) {
+            if ( rowData[adope] == "Yes") {
+                operations += "," + adope;
             }
         }
         
         workflow = {};
         workflow["action"]      = action;
         workflow["name"]        = rowData["name"];
-        workflow["operations"]  = operations.join();
+        workflow["operations"]  = operations;
         
         model[action] = workflow;
         
