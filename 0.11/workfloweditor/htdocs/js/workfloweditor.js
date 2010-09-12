@@ -95,13 +95,15 @@ jQuery(document).ready(function(){
             if (currentTab == "textTab") {
                 context.updateModelByText("#workflowText");
                 context.refreshGrid();
+            } else if (currentTab == "GridTab") {
+                context.updateModelByGrid("#workflowGrid");
+                context.refreshText();
+            } else if (currentTab == "AdavbnceTab") {
+                context.updateModelByAdvance("#workflowAdvance");
+                context.refreshText();
+            } else {
+                // do nothing
             }
-            
-            context.updateModelByGrid("#workflowGrid");
-            context.refreshText();
-            
-            // advance update
-            // advance refresh
         }
         catch(ex)
         {
