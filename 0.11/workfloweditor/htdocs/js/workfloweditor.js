@@ -75,12 +75,15 @@ jQuery(document).ready(function(){
             // do nothing
         } else if (ui.panel.id == "gridTab") {
             context.updateModelByText("#workflowText");
+            context.updateModelByAdvance("#workflowAdvance");
             context.refreshGrid();
         } else if (ui.panel.id == "textTab") {
             context.updateModelByGrid("#workflowGrid");
+            context.updateModelByAdvance("#workflowAdvance");
             context.refreshText();
         } else if (ui.panel.id == "advanceTab") {
-            context.updateModelByAdvance("#workflowAdvance");
+            context.updateModelByText("#workflowText");
+            context.updateModelByGrid("#workflowGrid");
             context.refreshText();
         } else {
             // do nothing
@@ -98,7 +101,7 @@ jQuery(document).ready(function(){
             } else if (currentTab == "GridTab") {
                 context.updateModelByGrid("#workflowGrid");
                 context.refreshText();
-            } else if (currentTab == "AdavbnceTab") {
+            } else if (currentTab == "advanceTab") {
                 context.updateModelByAdvance("#workflowAdvance");
                 context.refreshText();
             } else {
