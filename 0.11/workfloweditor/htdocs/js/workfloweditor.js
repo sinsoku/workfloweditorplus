@@ -935,7 +935,7 @@ workfloweditor.WorkflowContext.prototype.createAdvanceColModel = function() {
         var operationsColModel = {
             name        : opeValue[index],
             index       : opeValue[index],
-            width       : 130,
+            width       : 160,
             editable    : true,
             align       : "center",
             edittype    : "checkbox",
