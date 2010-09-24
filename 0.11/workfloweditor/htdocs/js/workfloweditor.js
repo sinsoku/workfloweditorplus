@@ -165,7 +165,7 @@ workfloweditor.WorkflowContext = function() {
                                "xref_local"         : _("xref local")
                               };
     this.DEFAULT_STATUS = ["new", "assigned", "accepted", "reopened", "closed"];
-    this.HIDDEN_COL     = ["operations", "permissions"];
+    this.HIDDEN_COL     = ["operations", "permissions", "set_owner", "set_resolution"];
     this.STATUS_PREFIX  = "status_";
     this.IMAGE_PATH     = "../../chrome/workfloweditor/images";
     this.EDIT_URL       = document.location + "/edit";
@@ -515,6 +515,23 @@ workfloweditor.WorkflowContext.prototype.initGrid = function(gridId) {
             $("#pData").hide();
             $("#nData").hide();
             jQuery(gridId).hideCol(self.HIDDEN_COL);
+            
+            // show option field
+            //     when select "set_owner" or "set_resolution"
+            var hideOpeOpt = function(){
+                $("#tr_set_owner").hide();
+                $("#tr_set_resolution").hide();
+                
+                var ope = $("#operations").val();
+                if( ope == "set_owner" ) {
+                    $("#tr_set_owner").show();
+                } else if ( ope == "set_resolution" ) {
+                    $("#tr_set_resolution").show();
+                }
+            }
+            hideOpeOpt();
+            
+            $("#operations").change(hideOpeOpt);
         }
         
         // add action setting
@@ -592,7 +609,7 @@ workfloweditor.WorkflowContext.prototype.createGridColNames = function() {
         _ = workfloweditor.Localizer.getLocalizedString;
     }
     
-    var colNames = [_('action'), _('name'), _('operation'), _('permission'), _('order'), _('next status'), ''];
+    var colNames = [_('action'), _('name'), _('operation'),_('set owner value'), _('set resolution value'), _('permission'), _('order'), _('next status'), ''];
     colNames = colNames.concat(this.status);
     
     return colNames;
@@ -626,6 +643,8 @@ workfloweditor.WorkflowContext.prototype.createGridColModel = function() {
         {name:'action',      index:'action',      width:75,  editable:true,  editrules:{required:true, edithidden:false}},
         {name:'name',        index:'name',        width:100, editable:true,  editrules:{required:true}},
         {name:'operations',  index:'operations',  width:100, editable:true,  edittype:"select", editoptions:{value:opeValue},  hidden:true},
+        {name:'set_owner',   index:'set_owner',   width:1, editable:true,     hidden:true},
+        {name:'set_resolution',index:'set_resolution',width:1, editable:true, hidden:true},
         {name:'permissions', index:'permissions', width:100, editable:true,  edittype:"select", editoptions:{value:permValue}, hidden:true},
         {name:'order',       index:'order',       width:45,  editable:true,  align:"right", sorttype:"int", editrules:{integer:true}},
         {name:'status',      index:'status',      width:100, editable:true,  edittype:"select", editoptions:{value:statusValue}},

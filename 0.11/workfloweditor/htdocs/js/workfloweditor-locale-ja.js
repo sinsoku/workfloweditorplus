@@ -16,6 +16,9 @@ workfloweditor.Localizer.strings = {
 'status' : 'ステータス',
 'Error: Please fix the workflow text.' : 'Error: ワークフロー設定を見直してください。',
 
+'set owner value' : '担当者',
+'set resolution value' : '解決方法',
+
 'set owner to reporter' : '報告者を自分に設定',
 'set owner to component owner' : 'コンポーネント担当者に設定',
 'set owner to field' : 'フィールド担当者に設定',
