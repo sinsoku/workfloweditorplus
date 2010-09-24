@@ -868,24 +868,6 @@ workfloweditor.WorkflowContext.prototype.initAdvance = function(advanceId) {
             jQuery(advanceId).hideCol(self.HIDDEN_COL);
         }
         
-        // add action setting
-        $(advanceId + "ItemAdd").click(function(){
-            jQuery(advanceId).editGridRow(
-                "new",
-                {
-                 top               : 50,
-                 left              : 200,
-                 height            : 400,
-                 width             : 350,
-                 mtype             : "GET",
-                 closeAfterAdd     : true,
-                 reloadAfterSubmit : false,
-                 beforeInitData    : showAdvanceCol,
-                 afterShowForm     : hideAdvanceCol
-                }
-            );
-        });
-        
         // modify action setting
         $(advanceId + "ItemMod").click(function(){
             var gr = jQuery(advanceId).getGridParam("selrow");
@@ -895,7 +877,7 @@ workfloweditor.WorkflowContext.prototype.initAdvance = function(advanceId) {
                     {
                      top               : 50,
                      left              : 200,
-                     height            : 400,
+                     height            : 300,
                      width             : 350,
                      mtype             : "GET",
                      closeAfterEdit    : true,
@@ -964,7 +946,7 @@ workfloweditor.WorkflowContext.prototype.createAdvanceColModel = function() {
     }
     
     var colModel = [
-        {name:'action',      index:'action',      width:75,  editable:true,  editrules:{required:true, edithidden:false}},
+        {name:'action',      index:'action',      width:75,  editable:false,  editrules:{required:true, edithidden:false}},
         {name:'name',        index:'name',        width:100, editable:true,  editrules:{required:true}},
     ];
     
