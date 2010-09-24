@@ -891,25 +891,6 @@ workfloweditor.WorkflowContext.prototype.initAdvance = function(advanceId) {
             }
         });
         
-        // delete action setting
-        $(advanceId + "ItemDel").click(function(){
-            var gr = jQuery(advanceId).getGridParam("selrow");
-            if( gr != null ) {
-                jQuery(advanceId).delAdvanceRow(
-                    gr,
-                    {
-                     top               : 50,
-                     left              : 200,
-                     mtype             : "GET",
-                     closeAfterEdit    : true,
-                     reloadAfterSubmit : false
-                    }
-                );
-            } else {
-                alert(_("Please select row."));
-            }
-        });
-        
     } // isFirst end
 }
 
