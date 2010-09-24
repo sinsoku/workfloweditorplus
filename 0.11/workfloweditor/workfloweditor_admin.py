@@ -84,6 +84,30 @@ class WorkflowEditorAdmin(Component):
             # set to memory
             section.set(name.strip(), value.strip())
             
+        # advanced workflow plugin controller
+        ADVANCE_CONTROLLER = ['TicketWorkflowOpOwnerReporter',
+                              'TicketWorkflowOpOwnerComponent',
+                              'TicketWorkflowOpOwnerField',
+                              'TicketWorkflowOpOwnerPrevious',
+                              'TicketWorkflowOpStatusPrevious',
+                              'TicketWorkflowOpResetMilestone',
+                              'TicketWorkflowOpRunExternal',
+                              'TicketWorkflowOpTriage',
+                              'TicketWorkflowOpXRef']
+        
+        # create csv value
+        value = ''
+        for i in range(0, len(ADVANCE_CONTROLLER)):
+            if i != 0:
+                value += ','
+            value += ADVANCE_CONTROLLER[i]
+
+        # get ticket section
+        ticket_section = self.config._sections['ticket']
+        
+        # set advance workflow controller to memory
+        ticket_section.set('workflow', value)
+        
         # save to file
         self.config.save()
     
