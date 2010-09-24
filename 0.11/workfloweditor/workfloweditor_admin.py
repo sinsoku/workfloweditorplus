@@ -84,6 +84,19 @@ class WorkflowEditorAdmin(Component):
             # set to memory
             section.set(name.strip(), value.strip())
             
+        # add AdvancedWorkflowPlugin controller
+        self._add_advance_controller()
+        
+        # save to file
+        self.config.save()
+    
+    def _add_advance_controller(self):
+        # get components section
+        components_section = self.config._sections['components']
+        
+        # set advance workflow to enable
+        components_section.set('advancedworkflow.*', 'enabled')
+    
         # advanced workflow plugin controller
         ADVANCE_CONTROLLER = ['TicketWorkflowOpOwnerReporter',
                               'TicketWorkflowOpOwnerComponent',
@@ -107,9 +120,6 @@ class WorkflowEditorAdmin(Component):
         
         # set advance workflow controller to memory
         ticket_section.set('workflow', value)
-        
-        # save to file
-        self.config.save()
     
     def _create_page_param(self, req, page_param):
         # page_param['workflow_config']
