@@ -98,7 +98,7 @@ jQuery(document).ready(function(){
             if (currentTab == "textTab") {
                 context.updateModelByText("#workflowText");
                 context.refreshGrid();
-            } else if (currentTab == "GridTab") {
+            } else if (currentTab == "gridTab") {
                 context.updateModelByGrid("#workflowGrid");
                 context.refreshText();
             } else if (currentTab == "advanceTab") {
