@@ -687,11 +687,16 @@ workfloweditor.WorkflowContext.prototype.createGridData = function() {
         var workflow = model[action];
         var rowData = {};
         
-        var operations;
-        if (this.DEFAULT_OPERATIONS[workflow["operations"]]) {
-            operations = this.DEFAULT_OPERATIONS[workflow["operations"]];
-        } else {
-            operations = "";
+        var operations = "";
+        for ( var ope in this.DEFAULT_OPERATIONS ) {
+            if ( ope == "" ) {
+                continue;
+            }
+            
+            if ( workflow["operations"].match(".*" + ope + "," + "|" + ope + "$") ) {
+                operations = this.DEFAULT_OPERATIONS[ope];
+                break;
+            }
         }
         
         var permissions;
@@ -701,10 +706,26 @@ workfloweditor.WorkflowContext.prototype.createGridData = function() {
             permissions = "";
         }
         
+        var set_owner;
+        if ( operations == "set_owner" && workflow["set_owner"] ) {
+            set_owner = workflow["set_owner"];
+        } else {
+            set_owner = "";
+        }
+        
+        var set_resolution;
+        if ( operations == "set_resolution" && workflow["set_resolution"] ) {
+            set_resolution = workflow["set_resolution"];
+        } else {
+            set_resolution = "";
+        }
+        
         rowData["action"]      = workflow["action"];
         rowData["name"]        = workflow["name"];
         rowData["status"]      = workflow["newStatus"];
         rowData["operations"]  = operations;
+        rowData["set_owner"]   = set_owner;
+        rowData["set_resolution"] = set_resolution;
         rowData["permissions"] = permissions;
         rowData["order"]       = modelSize - workflow["default"] + 1;
         rowData["blank"]       = "<--";
