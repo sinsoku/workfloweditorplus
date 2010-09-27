@@ -966,10 +966,15 @@ workfloweditor.WorkflowContext.prototype.createAdvanceColNames = function() {
     }
     
     var colNames = [_('action'), _('name')];
-    var operations;
-    for (ope in this.ADVANCED_OPERATIONS) {
-        colNames.push(this.ADVANCED_OPERATIONS[ope]);
-    }
+    colNames.push(this.ADVANCED_OPERATIONS['set_owner_to_reporter']);
+    colNames.push(this.ADVANCED_OPERATIONS['set_owner_to_component_owner']);
+    colNames.push(this.ADVANCED_OPERATIONS['set_owner_to_field']);
+    colNames.push(this.ADVANCED_OPERATIONS['set_owner_to_component_owner']);
+    colNames.push(this.ADVANCED_OPERATIONS['set_owner_to_previous']);
+    colNames.push(this.ADVANCED_OPERATIONS['set_status_to_previous']);
+    colNames.push(this.ADVANCED_OPERATIONS['run_external']);
+    colNames.push(this.ADVANCED_OPERATIONS['triage']);
+    colNames.push(this.ADVANCED_OPERATIONS['xref']);
     
     return colNames;
 }
@@ -988,21 +993,16 @@ workfloweditor.WorkflowContext.prototype.createAdvanceColModel = function() {
     var colModel = [
         {name:'action',      index:'action',      width:75,  editable:false,  editrules:{required:true, edithidden:false}},
         {name:'name',        index:'name',        width:100, editable:true,  editrules:{required:true}},
+        {name:'set_owner_to_reporter'       , index:'set_owner_to_reporter'       , width:160, editable:true, align:"center", edittype:"checkbox", editoptions:{value:"Yes:No"}},
+        {name:'set_owner_to_component_owner', index:'set_owner_to_component_owner', width:160, editable:true, align:"center", edittype:"checkbox", editoptions:{value:"Yes:No"}},
+        {name:'set_owner_to_field'          , index:'set_owner_to_field'          , width:160, editable:true, align:"center", edittype:"checkbox", editoptions:{value:"Yes:No"}},
+        {name:'set_owner_to_component_owner', index:'set_owner_to_component_owner', width:160, editable:true, align:"center", edittype:"checkbox", editoptions:{value:"Yes:No"}},
+        {name:'set_owner_to_previous'       , index:'set_owner_to_previous'       , width:160, editable:true, align:"center", edittype:"checkbox", editoptions:{value:"Yes:No"}},
+        {name:'set_status_to_previous'      , index:'set_status_to_previous'      , width:160, editable:true, align:"center", edittype:"checkbox", editoptions:{value:"Yes:No"}},
+        {name:'run_external'                , index:'run_external'                , width:160, editable:true, align:"center", edittype:"checkbox", editoptions:{value:"Yes:No"}},
+        {name:'triage'                      , index:'triage'                      , width:160, editable:true, align:"center", edittype:"checkbox", editoptions:{value:"Yes:No"}},
+        {name:'xref'                        , index:'xref'                        , width:160, editable:true, align:"center", edittype:"checkbox", editoptions:{value:"Yes:No"}},
     ];
-    
-    for (var index = 0; index < opeValue.length; index++) {
-        var operationsColModel = {
-            name        : opeValue[index],
-            index       : opeValue[index],
-            width       : 160,
-            editable    : true,
-            align       : "center",
-            edittype    : "checkbox",
-            editoptions : {value:"Yes:No"}
-        };
-        
-        colModel.push(operationsColModel);
-    }
     
     return colModel;
 }
