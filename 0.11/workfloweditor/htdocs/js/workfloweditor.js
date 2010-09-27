@@ -925,6 +925,60 @@ workfloweditor.WorkflowContext.prototype.initAdvance = function(advanceId) {
             $("#pData").hide();
             $("#nData").hide();
             jQuery(advanceId).hideCol(self.HIDDEN_COL);
+            
+            var setOwnerToFieldOpt = function() {
+                var chk = $("#set_owner_to_field").attr('checked');
+                
+                if(chk == true) {
+                    $("#tr_set_owner_to_field_val").show();
+                } else {
+                    $("#tr_set_owner_to_field_val").hide();
+                }
+            }
+            
+            var runExternalOpt = function() {
+                var chk = $("#run_external").attr('checked');
+                
+                if(chk == true) {
+                    $("#tr_run_external_val").show();
+                } else {
+                    $("#tr_run_external_val").hide();
+                }
+            }
+            
+            var triageOpt = function() {
+                var chk = $("#triage").attr('checked');
+                
+                if(chk == true) {
+                    $("#tr_triage_field").show();
+                    $("#tr_triage_split").show();
+                } else {
+                    $("#tr_triage_field").hide();
+                    $("#tr_triage_split").hide();
+                }
+            }
+            
+            var xrefOpt = function() {
+                var chk = $("#xref").attr('checked');
+                
+                if(chk == true) {
+                    $("#tr_xref_val").show();
+                    $("#tr_xref_local").show();
+                } else {
+                    $("#tr_xref_val").hide();
+                    $("#tr_xref_local").hide();
+                }
+            }
+            
+            setOwnerToFieldOpt();
+            runExternalOpt();
+            triageOpt();
+            xrefOpt();
+            
+            $("#set_owner_to_field").click(setOwnerToFieldOpt);
+            $("#run_external").click(runExternalOpt);
+            $("#triage").click(triageOpt);
+            $("#xref").click(xrefOpt);
         }
         
         // modify action setting
@@ -969,12 +1023,18 @@ workfloweditor.WorkflowContext.prototype.createAdvanceColNames = function() {
     colNames.push(this.ADVANCED_OPERATIONS['set_owner_to_reporter']);
     colNames.push(this.ADVANCED_OPERATIONS['set_owner_to_component_owner']);
     colNames.push(this.ADVANCED_OPERATIONS['set_owner_to_field']);
+    colNames.push(this.ADVANCED_OPTIONS['set_owner_to_field']);
     colNames.push(this.ADVANCED_OPERATIONS['set_owner_to_component_owner']);
     colNames.push(this.ADVANCED_OPERATIONS['set_owner_to_previous']);
     colNames.push(this.ADVANCED_OPERATIONS['set_status_to_previous']);
     colNames.push(this.ADVANCED_OPERATIONS['run_external']);
+    colNames.push(this.ADVANCED_OPTIONS['run_external']);
     colNames.push(this.ADVANCED_OPERATIONS['triage']);
+    colNames.push(this.ADVANCED_OPTIONS['triage_field']);
+    colNames.push(this.ADVANCED_OPTIONS['triage_split']);
     colNames.push(this.ADVANCED_OPERATIONS['xref']);
+    colNames.push(this.ADVANCED_OPTIONS['xref']);
+    colNames.push(this.ADVANCED_OPTIONS['xref_local']);
     
     return colNames;
 }
@@ -996,12 +1056,18 @@ workfloweditor.WorkflowContext.prototype.createAdvanceColModel = function() {
         {name:'set_owner_to_reporter'       , index:'set_owner_to_reporter'       , width:160, editable:true, align:"center", edittype:"checkbox", editoptions:{value:"Yes:No"}},
         {name:'set_owner_to_component_owner', index:'set_owner_to_component_owner', width:160, editable:true, align:"center", edittype:"checkbox", editoptions:{value:"Yes:No"}},
         {name:'set_owner_to_field'          , index:'set_owner_to_field'          , width:160, editable:true, align:"center", edittype:"checkbox", editoptions:{value:"Yes:No"}},
+        {name:'set_owner_to_field_val'      , index:'set_owner_to_field_val'      , width:0,   editable:true, hidden:true},
         {name:'set_owner_to_component_owner', index:'set_owner_to_component_owner', width:160, editable:true, align:"center", edittype:"checkbox", editoptions:{value:"Yes:No"}},
         {name:'set_owner_to_previous'       , index:'set_owner_to_previous'       , width:160, editable:true, align:"center", edittype:"checkbox", editoptions:{value:"Yes:No"}},
         {name:'set_status_to_previous'      , index:'set_status_to_previous'      , width:160, editable:true, align:"center", edittype:"checkbox", editoptions:{value:"Yes:No"}},
         {name:'run_external'                , index:'run_external'                , width:160, editable:true, align:"center", edittype:"checkbox", editoptions:{value:"Yes:No"}},
+        {name:'run_external_val'            , index:'run_external_val'            , width:0,   editable:true, hidden:true},
         {name:'triage'                      , index:'triage'                      , width:160, editable:true, align:"center", edittype:"checkbox", editoptions:{value:"Yes:No"}},
+        {name:'triage_field'                , index:'triage_field'                , width:0,   editable:true, hidden:true},
+        {name:'triage_split'                , index:'triage_split'                , width:0,   editable:true, hidden:true},
         {name:'xref'                        , index:'xref'                        , width:160, editable:true, align:"center", edittype:"checkbox", editoptions:{value:"Yes:No"}},
+        {name:'xref_val'                    , index:'xref_val'                    , width:0,   editable:true, hidden:true},
+        {name:'xref_local'                  , index:'xref_local'                  , width:0,   editable:true, hidden:true}
     ];
     
     return colModel;
