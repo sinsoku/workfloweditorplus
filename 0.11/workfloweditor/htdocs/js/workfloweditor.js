@@ -310,6 +310,16 @@ workfloweditor.WorkflowContext.prototype.updateModelByGrid = function(gridId) {
             }
         }
         
+        var set_owner = "";
+        if ( operations.match(".*" + "set_owner" + "," + "|" + "set_owner" + "$") || rowData["set_owner"]) {
+            set_owner = rowData["set_owner"];
+        }
+        
+        var set_resolution = "";
+        if ( operations.match(".*" + "set_resolution" + "," + "|" + "set_resolution" + "$") || rowData["set_resolution"]) {
+            set_resolution = rowData["set_resolution"];
+        }
+        
         workflow = {};
         workflow["action"]      = action;
         workflow["oldStatus"]   = oldStatus.join(",");
@@ -318,6 +328,8 @@ workfloweditor.WorkflowContext.prototype.updateModelByGrid = function(gridId) {
         workflow["default"]     = defaultVal;
         workflow["operations"]  = operations;
         workflow["permissions"] = permissions;
+        workflow["set_owner"]   = set_owner;
+        workflow["set_resolution"] = set_resolution;
         
         model[action] = workflow;
         
@@ -331,8 +343,8 @@ workfloweditor.WorkflowContext.prototype.updateModelByGrid = function(gridId) {
     
     // update model by grid has data
     for ( action in this.model ) {
-        for ( key in this.model[action] ) {
-            if ( model[action][key] ) {
+        for ( key in model[action] ) {
+            if ( model[action][key] != "" ) {
                 this.model[action][key] = model[action][key];
             }
         }
@@ -403,10 +415,47 @@ workfloweditor.WorkflowContext.prototype.updateModelByAdvance = function(advance
             }
         }
         
+        // update by advance option
+        var set_owner_to_field = "";
+        if ( operations.match(".*" + "set_owner_to_field" + "," + "|" + "set_owner_to_field" + "$") || rowData["set_owner_to_field_val"]) {
+            set_owner_to_field = rowData["set_owner_to_field_val"];
+        }
+        
+        var run_external = "";
+        if ( operations.match(".*" + "run_external" + "," + "|" + "run_external" + "$") || rowData["run_external_val"]) {
+            run_external = rowData["run_external_val"];
+        }
+        
+        var triage_field = "";
+        if ( operations.match(".*" + "triage_field" + "," + "|" + "triage_field" + "$") || rowData["triage_field"]) {
+            triage_field = rowData["triage_field"];
+        }
+        
+        var triage_split = "";
+        if ( operations.match(".*" + "triage_split" + "," + "|" + "triage_split" + "$") || rowData["triage_split"]) {
+            triage_split = rowData["triage_split"];
+        }
+        
+        var xref = "";
+        if ( operations.match(".*" + "xref" + "," + "|" + "xref" + "$") || rowData["xref_val"]) {
+            xref = rowData["xref_val"];
+        }
+        
+        var xref_local = "";
+        if ( operations.match(".*" + "xref_local" + "," + "|" + "xref_local" + "$") || rowData["xref_local"]) {
+            xref_local = rowData["xref_local"];
+        }
+        
         workflow = {};
         workflow["action"]      = action;
         workflow["name"]        = rowData["name"];
         workflow["operations"]  = operations;
+        workflow["set_owner_to_field"]  = set_owner_to_field;
+        workflow["run_external"]  = run_external;
+        workflow["triage_field"]  = triage_field;
+        workflow["triage_split"]  = triage_split;
+        workflow["xref"]          = xref;
+        workflow["xref_local"]    = xref_local;
         
         model[action] = workflow;
         
@@ -414,8 +463,8 @@ workfloweditor.WorkflowContext.prototype.updateModelByAdvance = function(advance
     
     // update model by advance has data
     for ( action in this.model ) {
-        for ( key in this.model[action] ) {
-            if ( model[action][key] ) {
+        for ( key in model[action] ) {
+            if ( model[action][key] != "" ) {
                 this.model[action][key] = model[action][key];
             }
         }
@@ -990,7 +1039,7 @@ workfloweditor.WorkflowContext.prototype.initAdvance = function(advanceId) {
                     {
                      top               : 50,
                      left              : 200,
-                     height            : 300,
+                     height            : 350,
                      width             : 350,
                      mtype             : "GET",
                      closeAfterEdit    : true,

@@ -29,5 +29,12 @@ workfloweditor.Localizer.strings = {
 'triage' : '複雑なワークフロー',
 'xref' : '重複チケット設定',
 
+'set owner to field value' : 'フィールド名',
+'run external value' : 'スクリプト パス',
+'triage field' : 'triage field',
+'triage split' : 'triage split',
+'xref value' : 'xref value',
+'xref local' : 'xref local',
+
 '' : ''
 };
