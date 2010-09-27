@@ -290,6 +290,14 @@ workfloweditor.WorkflowContext.prototype.updateModelByGrid = function(gridId) {
         for (ope in this.DEFAULT_OPERATIONS) {
             if (rowData["operations"] == this.DEFAULT_OPERATIONS[ope]) {
                 operations = ope;
+                
+                // add advance worlflow operations
+                var ope_array = this.model[action]["operations"].split(",");
+                for( opea in ope_array ) {
+                    if( opea != ope ) {
+                        operations += "," + opea;
+                    }
+                }
                 break;
             }
         }
@@ -356,7 +364,18 @@ workfloweditor.WorkflowContext.prototype.updateModelByAdvance = function(advance
             continue;
         }
         
-        var operations;
+        var operations = "";
+        for ( var ope in this.DEFAULT_OPERATIONS ) {
+            if ( ope == "" ) {
+                continue;
+            }
+            
+            if ( this.model[action]["operations"].match(".*" + ope + "," + "|" + ope + "$") ) {
+                operations = this.DEFAULT_OPERATIONS[ope];
+                break;
+            }
+        }
+        
         if (this.model[action]["operations"].indexOf(",") != -1) {
             // operations has advance operations
             var tmpOperations = this.model[action]["operations"].split(",");
