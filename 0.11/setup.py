@@ -15,10 +15,10 @@ setup(
     packages=find_packages(exclude=['*.tests*']),
     entry_points = {
         'trac.plugins': [
-            'workfloweditor.workfloweditor_admin = workfloweditor.workfloweditor_admin',
+            'workfloweditorplus.workfloweditor_admin = workfloweditorplus.workfloweditor_admin',
         ]
     },
-    package_data={'workfloweditor': [
+    package_data={'workfloweditorplus': [
                                      'templates/*.html',
                                      'templates/*.ini',
                                      'htdocs/css/*.css',
