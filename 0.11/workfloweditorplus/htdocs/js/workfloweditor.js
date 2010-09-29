@@ -69,24 +69,24 @@ jQuery(document).ready(function(){
     
     tabsElem.tabs("select", 0);
     tabsElem.bind("tabsselect", function(event, ui) {
-        currentTab = ui.panel.id;
-        
         if (!ui.panel.id) {
             // do nothing
-        } else if (ui.panel.id == "gridTab") {
+        } else if (currentTab == "gridTab") {
+            context.updateModelByGrid("#workflowGrid");
+            context.refreshText();
+        } else if (currentTab == "textTab") {
             context.updateModelByText("#workflowText");
+            context.refreshText();
+        } else if (currentTab == "advanceTab") {
             context.updateModelByAdvance("#workflowAdvance");
+            context.refreshText();
+        }
+        
+        currentTab = ui.panel.id;
+        if ( currentTab == "gridTab" ) {
             context.refreshGrid();
-        } else if (ui.panel.id == "textTab") {
-            context.updateModelByGrid("#workflowGrid");
-            context.updateModelByAdvance("#workflowAdvance");
-            context.refreshText();
-        } else if (ui.panel.id == "advanceTab") {
-            context.updateModelByText("#workflowText");
-            context.updateModelByGrid("#workflowGrid");
-            context.refreshText();
-        } else {
-            // do nothing
+        } else if ( currentTab == "advanceTab" ) {
+            context.refreshAdvance();
         }
     });
     
@@ -97,7 +97,7 @@ jQuery(document).ready(function(){
         {
             if (currentTab == "textTab") {
                 context.updateModelByText("#workflowText");
-                context.refreshGrid();
+                context.refreshText();
             } else if (currentTab == "gridTab") {
                 context.updateModelByGrid("#workflowGrid");
                 context.refreshText();
@@ -107,6 +107,7 @@ jQuery(document).ready(function(){
             } else {
                 // do nothing
             }
+            context.refreshGrid();
         }
         catch(ex)
         {
@@ -532,7 +533,7 @@ workfloweditor.WorkflowContext.prototype.refreshText = function() {
  */
 workfloweditor.WorkflowContext.prototype.refreshAdvance = function() {
     // remove the advance table and the advancve edit layout.
-    jQuery(this.advanceId).AdvanceUnload();
+    jQuery(this.advanceId).GridUnload();
     jQuery("#editmod" + this.advanceId.replace("#", "")).remove();
     
     this.initAdvance(this.advanceId);
