@@ -4,12 +4,12 @@
 from setuptools import find_packages, setup
 #ticket-workflow
 setup(
-    name = 'WorkflowEditorPlugin',
-    version = '1.0.3',
+    name = 'WorkflowEditorPlusPlugin',
+    version = '1.0.0a',
     description = "Edit Ticket Workflow",
-    url = "http://trac-hacks.org/wiki/WorkflowEditorPlugin",
-    author = "Takanori Suzuki",
-    author_email = "takanorig@gmail.com",
+    url = "http://github.com/sinsoku/workfloweditorplus/wiki",
+    author = "Takumi Shotoku",
+    author_email = "sinsoku.listy@gmail.com",
     license = "New BSD",
     zip_safe=True,
     packages=find_packages(exclude=['*.tests*']),

@@ -1,0 +1,33 @@
+WorkflowEditorPlusPlugin
+========================
+
+This plugin provides a simple web interface to edit the ticket workflow.
+
+And, supporting operations of AdvancedTicketWorkflowPlugin.
+
+Original Plugin
+---------------
+
+This plugin referred to "WorkflowEditorPlugin"
+
+* WorkflowEditorPlugin
+** Author : takanorig
+** url1 : http://trac-hacks.org/wiki/WorkflowEditorPlugin
+** url2 : http://d.hatena.ne.jp/szk-takanori/20090122/p1
+** Source : http://trac-hacks.org/svn/workfloweditorplugin
+** License : New BSD
+
+
+License
+-------
+
+* New BSD
+
+
+Author
+------
+
+* name : sinsoku
+* email : sinsoku@users.sourceforge.jp
+* url : http://d.hatena.ne.jp/sinsoku/
+
