@@ -295,8 +295,8 @@ workfloweditor.WorkflowContext.prototype.updateModelByGrid = function(gridId) {
                 // add advance worlflow operations
                 var ope_array = this.model[action]["operations"].split(",");
                 for( opea in ope_array ) {
-                    if( opea != ope ) {
-                        operations += "," + opea;
+                    if( ope_array[opea] != ope ) {
+                        operations += "," + ope_array[opea];
                     }
                 }
                 break;
